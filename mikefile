@@ -1,0 +1,77 @@
+#
+# Un example de makefile pour les tests
+#
+
+toto:	toto.o 
+	touch toto
+	echo toto est touche
+
+toto.o:	toto.c
+	touch toto.o
+	echo toto.o est touche
+
+#
+# Ceci est un cas tordu (le "." de toto.o ci-dessus est un caractere generique)
+#
+totooo:	toto
+	echo essai
+
+#
+# Un cas classique sans prerequis
+#
+clean:
+	rm -f toto *.o
+
+#
+# Le cas ou on ne sait pas faire
+#
+impossible: inexistant
+	touch impossible
+
+#
+# Une cible qui n'est jamais a jour
+#
+
+foo: clean
+	touch foo
+
+#
+# Le cas ou il y a un erreur dans une commande
+#
+
+titi: erreur toto.o
+	touch titi
+	echo titi est touche
+
+erreur:
+	bad_cmd
+	echo commande qui s'execute seulement avec l'option -B
+
+#
+# Un loop infini
+#
+
+premier: deuxieme
+	touch premier
+	echo premier est touche
+
+deuxieme: troisieme
+	touch deuxieme
+	echo deuxieme est touche
+
+troisieme: premier
+	touch troisieme
+	echo troisieme est tuche
+
+#
+# Une dependance qui se repete
+#
+
+cat: dog bee
+	echo cat
+
+dog: bee
+	echo dog
+
+bee: 
+	echo bee
